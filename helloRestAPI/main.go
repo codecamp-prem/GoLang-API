@@ -13,7 +13,7 @@ func main() {
 		c.String(http.StatusOK, "Hello Rest API")
 	})
 	r.GET("/hello2", hello)
-	r.Run()
+	r.Run() //Default 8080 port if
 	fmt.Println("Server is running!!")
 }
 
