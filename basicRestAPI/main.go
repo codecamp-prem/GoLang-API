@@ -15,6 +15,16 @@ func main() {
 	r.POST("/", postHello)
 	r.PUT("/", putHello)
 	r.DELETE("/", deleteHello)
+
+	// groupin
+	r1 := r.Group("/api")
+	{
+		r1.GET("/hello", getHello)
+		r1.POST("/hello", postHello)
+		r1.PUT("/hello", putHello)
+		r1.DELETE("/hello", deleteHello)
+	}
+
 	r.Run() //Default port 8080
 	fmt.Println("Server is running!!")
 }
