@@ -8,6 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Product : struct
+type Product struct {
+	ID    int     `json:"ID" binding:"required"`
+	Name  string  `json:"name" binding:"required"`
+	Stock int     `json:"stock"`
+	Price float32 `json:"price"`
+}
+
 func main() {
 	r := gin.Default()
 
@@ -35,8 +43,38 @@ func main() {
 	// /employee?firstname=Jane&lastname=Doe&id=2
 	r.GET("/employee", showEmployee)
 
-	r.Run() //Default port 8080
+	//binding post data
+	r.POST("/product", performProduct)
+	r.POST("/products", performProducts)
+
+	r.Run(":8080") //Default port 8080
 	fmt.Println("Server is running!!")
+}
+
+func performProduct(c *gin.Context) {
+	var product Product
+
+	err := c.BindJSON(&product)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid Request",
+		})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, product)
+}
+
+func performProducts(c *gin.Context) {
+	var products []Product
+
+	err := c.BindJSON(&products)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid Request",
+		})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, products)
 }
 
 func showEmployee(c *gin.Context) {
