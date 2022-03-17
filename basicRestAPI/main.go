@@ -31,8 +31,24 @@ func main() {
 	r.GET("/profile/:username", showProfile)
 	r.GET("/compute/:num1/add/:num2", compute)
 
+	// Handling query params
+	// /employee?firstname=Jane&lastname=Doe&id=2
+	r.GET("/employee", showEmployee)
+
 	r.Run() //Default port 8080
 	fmt.Println("Server is running!!")
+}
+
+func showEmployee(c *gin.Context) {
+	firstName := c.DefaultQuery("firstname", "")
+	lastName := c.DefaultQuery("lastname", "")
+	id, _ := strconv.ParseInt(c.DefaultQuery("id", "0"), 10, 0)
+
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"id":         id,
+		"First Name": firstName,
+		"Last Name":  lastName,
+	})
 }
 
 func getProductByID(c *gin.Context) {
