@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 // Product : struct
@@ -46,6 +49,18 @@ func main() {
 	//binding post data
 	r.POST("/product", performProduct)
 	r.POST("/products", performProducts)
+
+	// reading .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	mapAPIPswd := os.Getenv("MAP_API_PSWD")
+	dbPswd := os.Getenv("DB_PSWD")
+	appVersion := os.Getenv("APP_VERSION")
+
+	fmt.Printf("MAP_API_PSWD=%s\nDB_PSWD=%s\nAPP_VERSION=%s\n", mapAPIPswd, dbPswd, appVersion)
 
 	r.Run(":8080") //Default port 8080
 	fmt.Println("Server is running!!")
